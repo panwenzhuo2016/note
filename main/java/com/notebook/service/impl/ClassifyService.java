@@ -1,0 +1,68 @@
+package com.notebook.service.impl;
+
+
+import com.notebook.dao.IClassifyDao;
+import com.notebook.po.Classify;
+import com.notebook.service.IClassifyService;
+import com.util.DateUtils;
+import com.util.UuidUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by 潘文卓 on Mon Nov 13 17:00:38 CST 2017.
+ */
+@Service
+public class ClassifyService implements IClassifyService {
+
+    @Autowired
+    IClassifyDao classifyDao;
+
+    @Override
+    public void add(Classify classify) {
+        classify.setId(UuidUtil.getUuid());
+        classify.setDeleteState('0');
+        classifyDao.add(classify);
+    }
+
+    @Override
+    public void update(Classify classify) {
+        classify.setModifyTime(DateUtils.CURR_DATE_STR);
+        classify.setCreateTime(null);
+        classify.setDeleteState('0');
+        classifyDao.update(classify);
+    }
+
+    @Override
+    public void delete(String objId) {
+        Classify classify = classifyDao.getEntityById(objId);
+        classify.setDeleteState('1');
+        classifyDao.update(classify);
+    }
+
+    @Override
+    public Classify get(String objId) {
+       return classifyDao.getEntityById(objId);
+    }
+
+    @Override
+    public void save(Classify classify) {
+        if(StringUtils.isEmpty(classify.getId())){
+            add(classify);
+        }else {
+            update(classify);
+        }
+    }
+
+    @Override
+    public List<Classify> findDataGrid(Map<String, Object> params) {
+        return classifyDao.findDataGrid(params);
+    }
+
+
+}
