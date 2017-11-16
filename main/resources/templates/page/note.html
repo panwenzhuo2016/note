@@ -1,26 +1,45 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!--<link href="ue/themes/default/css/umeditor.css" type="text/css" rel="stylesheet"/>-->
     <script src="/webjars/jquery/2.0.0/jquery.min.js"></script>
     <script src="/webjars/bootstrap/3.3.6/dist/js/bootstrap.min.js"></script>
     <title>笔记本</title>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.6/dist/css/bootstrap.min.css"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+
+    <!-- 配置文件 -->
+    <!--<script type="text/javascript" src="ue/third-party/template.min.js"></script>-->
+    <!--<script src="ue/umeditor.config.js"></script>-->
+    <!--<script src="ue/umeditor.min.js"></script>-->
+    <!--&lt;!&ndash; 编辑器源码文件 &ndash;&gt;-->
+    <!--<script type="text/javascript" src="ue/lang/zh-cn/zh-cn.js"></script>-->
+    <!--<script type="text/javascript" src="hotkeys/bootstrap-wysiwyg.js"></script>-->
+    <!-- 配置文件 -->
+    <script src="ueditor/ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script src="ueditor/ueditor.all.min.js"></script>
+
+    <script src="toastr/toastr.min.js"></script>
+    <link rel="stylesheet" href="toastr/toastr.css"/>
     <style>
-        #left{
+        #left {
             width: 10%;
             float: left;
             height: 100%;
             background-color: whitesmoke;
 
         }
-        #cen{
+
+        #cen {
             width: 15%;
             float: left;
             height: 100%;
             background-color: rgba(251, 237, 230, 0.84);
         }
-        #right{
+
+        #right {
             width: 75%;
             float: left;
             height: 100%;
@@ -48,39 +67,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
-                    <!--<li><a href="#">Link</a></li>-->
-                    <!--<li class="dropdown">-->
-                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
-                    <!--<ul class="dropdown-menu">-->
-                    <!--<li><a href="#">Action</a></li>-->
-                    <!--<li><a href="#">Another action</a></li>-->
-                    <!--<li><a href="#">Something else here</a></li>-->
-                    <!--<li role="separator" class="divider"></li>-->
-                    <!--<li><a href="#">Separated link</a></li>-->
-                    <!--<li role="separator" class="divider"></li>-->
-                    <!--<li><a href="#">One more separated link</a></li>-->
-                    <!--</ul>-->
-                    <!--</li>-->
                 </ul>
                 <form class="navbar-form navbar-left">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder=""/>
+                        <input type="text" class="form-control" id="searchName" placeholder=""/>
                     </div>
-                    <button type="submit" class="btn btn-default">查询</button>
+                    <button type="submit" class="btn btn-default" onclick="search()">查询</button>
                 </form>
-                <!--<ul class="nav navbar-nav navbar-right">-->
-                <!--<li><a href="#">Link</a></li>-->
-                <!--<li class="dropdown">-->
-                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
-                <!--<ul class="dropdown-menu">-->
-                <!--<li><a href="#">Action</a></li>-->
-                <!--<li><a href="#">Another action</a></li>-->
-                <!--<li><a href="#">Something else here</a></li>-->
-                <!--<li role="separator" class="divider"></li>-->
-                <!--<li><a href="#">Separated link</a></li>-->
-                <!--</ul>-->
-                <!--</li>-->
-                <!--</ul>-->
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
@@ -91,68 +84,250 @@
 
     <div id="left">
         <div class="btn-group" role="group" style="    margin: 3px;">
-            <button class="btn btn-default" data-toggle="modal" data-target="#mymodal-data" type="button">添加一个分类</button>
-            <button class="btn btn-default"   type="button">删除</button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#mymodal-data" type="button">添加分类
+            </button>
+            <button class="btn btn-warning" type="button" onclick="deleteClassfy()">删除</button>
+
             <!-- 模态弹出窗内容 -->
-            <div class="modal" id="mymodal-data" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal" id="mymodal-data" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-body input-group">
                             <span class="input-group-addon" id="basic-addon1">分类名</span>
-                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1"/>
+                            <input type="text" class="form-control" placeholder="" id="classifyName"
+                                   aria-describedby="basic-addon1"/>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" id="closeWindow" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary" onclick="saveClassify()">保存</button>
+                            <button type="button" class="btn btn-default" id="closeWindow" data-dismiss="modal">关闭
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick=" saveClassify()">保存</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div>
-            <ul class="list-group">
-                <a href="#" class="list-group-item">
-                    <span class="badge">1</span>
-                 生活日记
-                </a>
-                <a href="#" class="list-group-item">
-                    <span class="badge">2</span>
-                  读书笔记
-                </a>
-                <a href="#" class="list-group-item">
-                    <span class="badge">3</span>
-                   三个
-                </a>
+            <ul class="list-group" id="ul-1">
             </ul>
         </div>
 
     </div>
     <div id="cen">
+        <div class="btn-group" role="group" style="    margin: 3px;">
+            <button class="btn btn-success" onclick="addNote()" type="button">添加日志
+            </button>
+            <button class="btn btn-warning" type="button" onclick="deleteNote()">删除</button>
+        </div>
+        <div>
+            <ul class="list-group" id="ul-2">
+            </ul>
+        </div>
 
     </div>
     <div id="right">
-
+        <div class=" input-group" style="    margin: 10px 10px 10px 0px;">
+            <span class="input-group-addon">标题</span>
+            <input type="text" class="form-control" placeholder="" id="title"/>
+        </div>
+        <div id="conten" name="conten" style="width: 100%;height: 500px">
+        </div>
+        <button type="button" class="btn btn-primary" id="saveData" onclick="saveData()"
+                style="margin-left: 600px;margin-top: 10px">保存一下
+        </button>
     </div>
+
 
 </div>
 </body>
+
 <script>
+    var saveClassify;
+    var classifyID = '12612c15bc6946a083c80eb9aaef8557';
+    var noteID = '';
+    var editor = UE.getEditor('conten');
+    //    <![CDATA[
     $(function () {
-        $.ajax({
-            type: 'post',
-            url: getRootPath()+'/?getAllClassify',
-            contentType: 'application/json;charset=utf-8',
-            data: '{"name": "uname", "age": 18}',
-            success: function (data) { //返回json结果
-            }
-        });
+        getAllClassify();
+        initEditor();
+        initNote();
     });
-    
-    var saveClassify = function () {
+    var initEditor = function () {
+//        $('#conten').wysiwyg();
+
+        editor.ready(function () {
+            editor.setContent("");
+        });
+    }
+
+    saveClassify = function () {
+        var classifyName = $("#classifyName").val();
+        if (classifyName != null && classifyName != '') {
+            $.ajax({
+                type: 'post',
+                url: getRootPath() + '/?addClassify&classifyName=' + classifyName,
+                contentType: 'application/json;charset=utf-8',
+                data: '',
+                success: function (data) { //返回json结果
+                    toastr.success("保存成功");
+                    getAllClassify();
+                    $("#classifyName").val("");
+                }
+            });
+        }
         $("#closeWindow").trigger('click');
     }
 
-    function getRootPath(){
+    var getAllClassify = function () {
+        $.ajax({
+            type: 'post',
+            url: getRootPath() + '/?getAllClassify',
+            contentType: 'application/json;charset=utf-8',
+            data: '',
+            success: function (data) { //返回json结果
+                var x;
+                $("#ul-1").empty();
+                for (x in data) {
+                    $("#ul-1").append('<a href="#" onclick="getNoteByClassify(this)" class="list-group-item" id="' + data[x].id + '"> <span class="badge">' + data[x].num + '</span>' + data[x].classifyName + ' </a>');
+                }
+            }
+        });
+    }
+
+    var getNoteByClassify = function (Classify) {
+        classifyID = Classify.id;
+        editor.setContent("");
+        $("#title").val("");
+        $.ajax({
+            type: 'post',
+            url: getRootPath() + '/?getNoteByClassify&classifyId=' + Classify.id,
+            contentType: 'application/json;charset=utf-8',
+            data: '',
+            success: function (data) { //返回json结果
+                var x;
+                $("#ul-2").empty();
+                for (x in data) {
+                    $("#ul-2").append('<a href="#" onclick="getNoteById(this)" class="list-group-item" id="' + data[x].id + '"> ' + data[x].title + ' </a>');
+                }
+            }
+        });
+    }
+
+    var initNote = function () {
+        $.ajax({
+            type: 'post',
+            url: getRootPath() + '/?getNoteByClassify&classifyId=' + classifyID,
+            contentType: 'application/json;charset=utf-8',
+            data: '',
+            success: function (data) { //返回json结果
+                var x;
+                $("#ul-2").empty();
+                for (x in data) {
+                    $("#ul-2").append('<a href="#" onclick="getNoteById(this)" class="list-group-item" id="' + data[x].id + '"> ' + data[x].title + ' </a>');
+                }
+            }
+        });
+    }
+
+    var getNoteById = function (Note) {
+        noteID = Note.id;
+        $.ajax({
+            type: 'post',
+            url: getRootPath() + '/?getNoteById&noteId=' + Note.id,
+            contentType: 'application/json;charset=utf-8',
+            data: '',
+            success: function (note) { //返回json结果
+                editor.setContent(note.content);
+                $("#title").val(note.title);
+            }
+        });
+
+    }
+
+    var addNote = function () {
+        noteID = ''
+        editor.setContent("");
+        $("#title").val("");
+    }
+
+    var saveData = function () {
+        if(classifyID == ''){
+            classifyID = '12612c15bc6946a083c80eb9aaef8557';
+        }
+        if ($("#title").val() != '') {
+            $.ajax({
+                type: 'post',
+                url: getRootPath() + '/?addNote&title=' + $("#title").val()
+                + "&content=" + editor.getContent() + "&classifyId=" + classifyID + "&id=" + noteID,
+                contentType: 'application/json;charset=utf-8',
+                data: '',
+                success: function (note) { //返回json结果
+                    toastr.success("保存成功");
+                    getAllClassify();
+                    initNote();
+                    noteID = '';
+                    editor.setContent("");
+                    $("#title").val("");
+                }
+            });
+        }
+    }
+
+    var search = function () {
+        var searchName = $("#searchName").val();
+        $.ajax({
+            type: 'post',
+            url: getRootPath() + '/?search&searchName=' + searchName,
+            contentType: 'application/json;charset=utf-8',
+            data: '',
+            success: function (data) { //返回json结果
+                var x;
+                $("#ul-2").empty();
+                for (x in data) {
+                    $("#ul-2").append('<a href="#" onclick="getNoteById(this)" class="list-group-item" id="' + data[x].id + '"> ' + data[x].title + ' </a>');
+                }
+            }
+        });
+    }
+
+    var deleteClassfy = function () {
+        if(classifyID == ''){
+            return;
+        }
+        if('12612c15bc6946a083c80eb9aaef8557' == classifyID){
+            toastr.warning("默认分组不能删除");
+            return;
+        }
+        $.ajax({
+            type: 'post',
+            url: getRootPath() + '/?deleteClassfy&classifyId=' + classifyID,
+            contentType: 'application/json;charset=utf-8',
+            data: '',
+            success: function (data) { //返回json结果
+                toastr.success("删除分组：'"+data.classifyName+"'成功");
+                getAllClassify();
+                initNote();
+            }
+        });
+    }
+    var deleteNote = function () {
+        if(noteID == ''){
+            return;
+        }
+        $.ajax({
+            type: 'post',
+            url: getRootPath() + '/?deleteNote&noteId=' + noteID,
+            contentType: 'application/json;charset=utf-8',
+            data: '',
+            success: function (data) { //返回json结果
+                toastr.success("删除日志：'"+data.title+"'成功");
+                getAllClassify();
+                initNote();
+            }
+        });
+    }
+
+    function getRootPath() {
         //获取当前网址，如： http://localhost:8083/proj/meun.jsp
         var curWwwPath = window.document.location.href;
         //获取主机地址之后的目录，如： proj/meun.jsp
@@ -161,8 +336,10 @@
         //获取主机地址，如： http://localhost:8083
         var localhostPath = curWwwPath.substring(0, pos);
         //获取带"/"的项目名，如：/proj
-        var projectName = pathName.substring(0, pathName.substr(1).indexOf('/')+1);
-        return(localhostPath + projectName);
+        var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+        return (localhostPath + projectName);
     }
+
+    //    ]]>
 </script>
 </html>

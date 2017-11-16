@@ -120,4 +120,10 @@
 
 	<sql id="condition">
 		where 1=1
+		<if test="classifyId != null and classifyId != ''">
+			and a.classify_id = #{classifyId}
+		</if>
+		<if test="title != null and title != ''">
+			and a.title like concat(concat('%',#{title}),'%')
+		</if>
 	</sql></mapper>

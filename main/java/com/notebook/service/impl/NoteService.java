@@ -1,6 +1,7 @@
 package com.notebook.service.impl;
 
 
+import com.google.common.collect.Maps;
 import com.notebook.dao.INoteDao;
 import com.notebook.po.Note;
 import com.notebook.service.INoteService;
@@ -40,9 +41,7 @@ public class NoteService implements INoteService {
 
     @Override
     public void delete(String objId) {
-        Note note = noteDao.getEntityById(objId);
-        note.setDeleteState('1');
-        noteDao.update(note);
+        noteDao.delete(objId);
     }
 
     @Override
@@ -59,6 +58,10 @@ public class NoteService implements INoteService {
         }
     }
 
+    @Override
+    public List<Note> findDataGrid(Map<String, Object> params) {
+        return noteDao.findDataGrid(params);
+    }
 
 
 }

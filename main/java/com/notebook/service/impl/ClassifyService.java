@@ -1,9 +1,12 @@
 package com.notebook.service.impl;
 
 
+import com.google.common.collect.Maps;
 import com.notebook.dao.IClassifyDao;
 import com.notebook.po.Classify;
+import com.notebook.po.Note;
 import com.notebook.service.IClassifyService;
+import com.notebook.service.INoteService;
 import com.util.DateUtils;
 import com.util.UuidUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +25,8 @@ public class ClassifyService implements IClassifyService {
 
     @Autowired
     IClassifyDao classifyDao;
+    @Autowired
+    INoteService noteService;
 
     @Override
     public void add(Classify classify) {
@@ -40,9 +45,14 @@ public class ClassifyService implements IClassifyService {
 
     @Override
     public void delete(String objId) {
-        Classify classify = classifyDao.getEntityById(objId);
-        classify.setDeleteState('1');
-        classifyDao.update(classify);
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("classifyId", objId);
+        List<Note> noteList = noteService.findDataGrid(params);
+        for(Note note : noteList){
+            note.setClassifyId("12612c15bc6946a083c80eb9aaef8557");
+            noteService.update(note);
+        }
+        classifyDao.delete(objId);
     }
 
     @Override

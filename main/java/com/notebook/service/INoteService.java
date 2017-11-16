@@ -1,7 +1,11 @@
 package com.notebook.service;
 
 
+import com.notebook.po.Classify;
 import com.notebook.po.Note;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 潘文卓 on Mon Nov 13 17:11:00 CST 2017
@@ -38,5 +42,6 @@ public interface INoteService {
      * @param note 实体
      */
     void save(Note note);
+    List<Note> findDataGrid(Map<String, Object> params);
 
 }

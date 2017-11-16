@@ -20,7 +20,18 @@ import java.io.Serializable;
 	private String classifyName;
 	/****/
 	private String sort;
+	/**
+	 * 每个分类对应的数量
+	 */
+	private int num;
 
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
 
 	public void setId(String id){
 		this.id = id;
