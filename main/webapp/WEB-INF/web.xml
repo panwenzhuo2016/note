@@ -4,4 +4,8 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <!--5.初始化访问-->
+  <welcome-file-list>
+    <welcome-file>platform/authority/login.spr</welcome-file>
+  </welcome-file-list>
 </web-app>

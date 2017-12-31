@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div style="text-align: center;">
+        <div class="center-block alert alert-danger alert-dismissible ${empty message ? 'hide' : ''}" role="alert" style="width: 375px;height: 53px;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <label id="loginError" class="error">${message}</label>
+        </div>
+    </div>
+    <form class="form-signin" id="loginForm" action="${ctx}/platform/authority/login.spr" method="post">
+        <h2 class="form-signin-heading">爱配电平台</h2>
+        <input type="text" class="form-control" name="username" placeholder="login account" required="" autofocus="" />
+        <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
+        <label class="checkbox" style="text-align: right;font-size:11px;">
+            <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe" /> 记住我
+        </label>
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="登 录"/>
+    </form>
+</div>
+<div style="text-align: center;">当前版本 V 1.0.4</div>
+</body>
+</html>
